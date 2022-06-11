@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  mongodb:
+    image: mongodb_local:latest
+    container_name: stag_marketplace_nft_mongodb
+    ports:
+      - "27019:27017"
+    networks:
+      outer:
+        ipv4_address: "10.5.0.11"
+    env_file:
+      - .env
+    volumes:
+      - ./mongodb_configuration/:/docker-entrypoint-initdb.d/:ro
+      - ./mongodb_configuration/init-mongodb.sh:/docker-entrypoint-initdb.d/init-mongodb.sh:ro
+      - "./config/mongod.conf:/data/configdb/mongod.conf:ro"
+      - "./config/secret.kf:/etc/secret.kf:ro"
+      - "./data:/data/db"
+      - "log:/var/log/mongodb"
+    command: ["/usr/bin/mongod", "-f", "/data/configdb/mongod.conf"]
+volumes:
+  log: null
+networks:
+  outer:
+    external:
+      name: marketplace
