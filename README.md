@@ -23,6 +23,9 @@ CMD ["mongod"]
 ## Step 4: Tạo secre.kf và mongod.conf
 ```
 openssl rand -base64 768 > secret.kf
+```
+
+```
 # mongod.conf
 
 # for documentation of all options, see:
