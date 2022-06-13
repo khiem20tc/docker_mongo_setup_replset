@@ -185,6 +185,7 @@ sudo chown -R user:groupuser file_name
 ```
 
 ## Step 10: Run 
+```docker network create --subnet 10.5.0.0/24 marketplace```
 ```docker-compose up -d --build --force-recreate```
 
 ## Step 11: Start and config mongo REPLICATE SET
