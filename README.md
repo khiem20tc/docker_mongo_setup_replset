@@ -234,3 +234,8 @@ cf.members[0].host = "10.5.0.11:27017"
 
 rs.reconfig(cf)
 ```
+
+## Step 12: Add secondary to REPLICATE SET
+```
+rs.add(10.5.0.12:27017)
+```
