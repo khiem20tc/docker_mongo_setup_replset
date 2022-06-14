@@ -7,6 +7,9 @@ Note
 - Same network docker
 - Set static IP for each container
 - Same secret.kf
+- Chmod 600 for all file
+- Build custom image form MONGO base image
+- Chown for mongodb USER in custome image
 
 ## Step 1: create new user Database on VPS (tránh dùng user Root)
 
