@@ -1,10 +1,16 @@
 # Setup MongoDB Replicate by Docker
 
+## Mongo Replicate Set with Docker in same VPS
+Master - Secondary
+
+Note
+- Same network docker
+- Set static IP for each container
+- Same secret.kf
+
 ## Step 1: create new user Database on VPS (tránh dùng user Root)
 
-## Step 2: tạo folder mongodb với structure như source code
-
-
+## Step 2: tạo 2 folder mongodb với structure như source code
 
 ## Step 3: tạo Docker file build từ base igame mongo:5.0.6
 ```
@@ -123,26 +129,31 @@ EOF
 ```
 version: "3.9"
 services:
-  mongodb:
-    image: mongodb_mongodb:latest
-    container_name: marketplace_nft_mongodb
-    ports:
-      - "27018:27017"
-    networks:
-      - outer
-    env_file:
-      - .env
-    volumes:
-      - ./mongodb_configuration/:/docker-entrypoint-initdb.d/:ro
-      - ./mongodb_configuration/init-mongodb.sh:/docker-entrypoint-initdb.d/init-mongodb.sh:ro
-      - "./config/mongod.conf:/data/configdb/mongod.conf:ro"
-      - "./config/secret.kf:/etc/secret.kf:ro"
-      - "./data:/data/db"
-      - "./log/mongod.log:/var/log/mongod.log"
-    command: ["/usr/bin/mongod", "-f", "/data/configdb/mongod.conf"]
+  mongodb:
+    image: mongodb_local:latest
+    container_name: stag_marketplace_nft_mongodb01
+    ports:
+      - "27019:27017"
+    networks:
+      outer:
+        ipv4_address: "10.5.0.11"
+    env_file:
+      - .env
+    volumes:
+      - ./mongodb_configuration/:/docker-entrypoint-initdb.d/:ro
+      - ./mongodb_configuration/init-mongodb.sh:/docker-entrypoint-initdb.d/init-mongodb.sh:ro
+      - "./config/mongod.conf:/data/configdb/mongod.conf:ro"
+      - "./config/secret.kf:/etc/secret.kf:ro"
+      - "./data:/data/db"
+      - "log:/var/log/mongodb"
+    command: ["/usr/bin/mongod", "-f", "/data/configdb/mongod.conf"]
+    restart: always
+volumes:
+  log: null
 networks:
-  outer:
-    name: "marketplace_nft"
+  outer:
+    external:
+      name: marketplace
 ```
 ## Step 8: Tạo file .env
 ```
